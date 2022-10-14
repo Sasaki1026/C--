@@ -84,7 +84,7 @@ int main()
             dequene(L2);
         }
         else{//次方相等
-            push(ans, L1.head->coef + L2.head->coef, L1.head->exp + L2.head->exp);
+            push(ans, L1.head->coef + L2.head->coef, L1.head->exp);
             dequene(L1);
             dequene(L2);
         }
