@@ -41,9 +41,9 @@ void dequene(linkedList &q)
 
 void print(linkedList &q)
 {
-    while (q.size > 0)
+    while (q.head != NULL)
     {
-        if(q.head->coef == 0){
+        if(q.head->coef != 0){
             cout << q.head->coef << " " << q.head->exp << " ";
         }
         dequene(q);
@@ -73,34 +73,28 @@ int main()
     while(L1.head != NULL || L2.head != NULL)
     {
         if(L1.head == NULL){
-            cout <<"case1\n";
             push(ans, L2.head->coef, L2.head->exp);
             dequene(L2);
         }
         else if(L2.head == NULL){
-            cout <<"case2\n";
             push(ans, L1.head->coef, L1.head->exp);
             dequene(L1);
         }
         else if(L1.head->exp > L2.head->exp){//L1次方大於L2
-            cout <<"case3\n";
             push(ans, L1.head->coef, L1.head->exp);
             dequene(L1);
         }
         else if(L1.head->exp < L2.head->exp){//L2次方小於L1
-            cout <<"case4\n";
             push(ans, L2.head->coef, L2.head->exp);
             dequene(L2);
         }
         else{//次方相等
-            cout <<"case5\n";
             push(ans, L1.head->coef + L2.head->coef, L1.head->exp);
             dequene(L1);
             dequene(L2);
         }
     }
-    
-    cout << "test\n";
+
     print(ans);
 
     return 0;
