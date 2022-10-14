@@ -1,4 +1,4 @@
-Polynomial Addition
+**Polynomial Addition**
 
 Description
 
@@ -62,13 +62,21 @@ ex:
 Sample Input 1 
 
 2
+
 1 3
+
 2 2
+
 1
+
 1 3
+
+
 Sample Output 1
 
 2 3 2 2
+
+
 Hint
 
 1.若係數為0，不用列印出來(輸入的測資可能有0的項次，請在輸出時判定相加後的係數是否為0)
