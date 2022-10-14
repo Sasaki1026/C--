@@ -33,10 +33,7 @@ void push(linkedList &q, int co, int exp)
 
 void dequene(linkedList &q)
 {
-    if(q.head == NULL){
-        cout << "QueneNullException" << endl;
-    }
-    else{
+    if(q.head != NULL){
         q.head = q.head->link;
         q.size--;
     }
@@ -73,8 +70,9 @@ int main()
     }
 
     //相加
-    while(L1.size > 0 || L2.size > 0)
+    while(L1.head != NULL || L2.head != NULL)
     {
+        cout << L1.size << " " << L2.size  << " " << ans.size <<"\n";
         if(L1.head->exp > L2.head->exp){//L1次方大於L2
             push(ans, L1.head->coef, L1.head->exp);
             dequene(L1);
@@ -89,7 +87,7 @@ int main()
             dequene(L2);
         }
     }
-
+    cout << "test\n";
     print(ans);
 
     return 0;
