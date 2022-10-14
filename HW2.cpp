@@ -72,21 +72,34 @@ int main()
     //相加
     while(L1.head != NULL || L2.head != NULL)
     {
-        cout << L1.size << " " << L2.size  << " " << ans.size <<"\n";
-        if(L1.head->exp > L2.head->exp){//L1次方大於L2
+        if(L1.head == NULL){
+            cout <<"case1\n";
+            push(ans, L2.head->coef, L2.head->exp);
+            dequene(L2);
+        }
+        else if(L2.head == NULL){
+            cout <<"case2\n";
+            push(ans, L1.head->coef, L1.head->exp);
+            dequene(L1);
+        }
+        else if(L1.head->exp > L2.head->exp){//L1次方大於L2
+            cout <<"case3\n";
             push(ans, L1.head->coef, L1.head->exp);
             dequene(L1);
         }
         else if(L1.head->exp < L2.head->exp){//L2次方小於L1
+            cout <<"case4\n";
             push(ans, L2.head->coef, L2.head->exp);
             dequene(L2);
         }
         else{//次方相等
+            cout <<"case5\n";
             push(ans, L1.head->coef + L2.head->coef, L1.head->exp);
             dequene(L1);
             dequene(L2);
         }
     }
+    
     cout << "test\n";
     print(ans);
 
