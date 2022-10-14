@@ -15,7 +15,7 @@ struct linkedList
     int size = 0;
 };
 
-void push(linkedList q, int co, int exp)
+void push(linkedList &q, int co, int exp)
 {
     node *n = new node;
     n->coef = co; n->exp = exp;
@@ -31,7 +31,7 @@ void push(linkedList q, int co, int exp)
     q.size++;
 }
 
-void dequene(linkedList q)
+void dequene(linkedList &q)
 {
     if(q.head == NULL){
         cout << "QueneNullException" << endl;
@@ -42,33 +42,55 @@ void dequene(linkedList q)
     }
 }
 
-int topCoef(linkedList q)
+void print(linkedList &q)
 {
-    if(q.head == NULL){
-        cout << "QueneNullException" << endl;
-        return -10000;
+    while (q.size > 0)
+    {
+        if(q.head->coef == 0){
+            cout << q.head->coef << " " << q.head->exp << " ";
+        }
+        dequene(q);
     }
-    else{
-        return q.head->coef;
-    }
-}
-
-int topExp(linkedList q)
-{
-    if(q.head == NULL){
-        cout << "QueneNullException" << endl;
-        return -10000;
-    }
-    else{
-        return q.head->exp;
-    }
+    
 }
 
 int main()
 {
-    linkedList L1, L2;
-    int len;//length of poly
+    //insert two polynomials
+    linkedList L1, L2, ans;
+    int len, tmpCo, tmpExp;//length of poly
     cin >> len;
+    for(int i = 0; i < len; i++)
+    {
+        cin >> tmpCo; cin >> tmpExp;
+        push(L1, tmpCo, tmpExp);
+    }
+    cin >> len;
+    for(int i = 0; i < len; i++)
+    {
+        cin >> tmpCo; cin >> tmpExp;
+        push(L2, tmpCo, tmpExp);
+    }
+
+    //相加
+    while(L1.size > 0 || L2.size > 0)
+    {
+        if(L1.head->exp > L2.head->exp){//L1次方大於L2
+            push(ans, L1.head->coef, L1.head->exp);
+            dequene(L1);
+        }
+        else if(L1.head->exp < L2.head->exp){//L2次方小於L1
+            push(ans, L2.head->coef, L2.head->exp);
+            dequene(L2);
+        }
+        else{//次方相等
+            push(ans, L1.head->coef + L2.head->coef, L1.head->exp + L2.head->exp);
+            dequene(L1);
+            dequene(L2);
+        }
+    }
+
+    print(ans);
 
     return 0;
 }
