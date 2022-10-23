@@ -1,65 +1,61 @@
 #include<iostream>
 #include<stack>
 #include<string>
+#include<map>
 using namespace std;
 
-int priorty(string op);
+
+map<string,int> priorty = {
+{"+",2},{"-",2},{"*",3},{"/",3},{"(",20},{")",0}
+};
+map<string,int> priorty2 = {
+{"+",2},{"-",2},{"*",3},{"/",3},{"(",1},{")",0}
+};
+
 void inToPost(string *in , string *po ,int len)
 {
     stack<string> s;
-    int i = 0, Polen = 0;
-
-    while(i < len){
-        if(*(in + i) == "1" || *(in + i) == "2" || *(in + i) == "3" || *(in + i) == "4" || *(in + i) == "5" || *(in + i) == "6" || *(in + i) == "7" || *(in + i) == "8" || *(in + i) == "9" ){
-            *(po + Polen) = *(in + i);
-            i++;
-            Polen++;
-        }
-        else if(*(in + i) == "("){
-            s.push(*(in + i));
-            i++;
-        }
-        else if(*(in + i) == ")"){
-
-            while(s.top() != "("){
-               *(po + Polen) =  s.top();
-               s.pop();
-               Polen++;
-            }
-            s.pop();
-            i++;
-        }
-        else{
-            if(i + 2 > len){
-                *(po + Polen) = *(in + i);
-                Polen++; i++;
-            }
-            else if(priorty(*(in + i)) >= priorty(*(in + i + 2))){
-                *(po + Polen) = *(in + i);
-                Polen++; i++;
+    int inID = 0;
+    int postID = 0;
+    while(inID < len)
+    {
+        if(priorty.count(*(in + inID))){
+            if(s.empty()){//
+                s.push(*(in + inID++));
             }
             else{
-                s.push(*(in + i));
-                i++;
+                while (!s.empty() && priorty2[s.top()] >= priorty[*(in + inID)])
+                {
+                    if(s.top()!="("){
+                        *(po + postID++) = s.top();
+                    }
+                    if(s.top()=="(" and *(in + inID)==")"){
+                        s.pop();
+                        break;
+                    }
+                    s.pop();
+                }
+                if(*(in + inID) != ")"){
+                    s.push(*(in + inID++));
+                };
             }
         }
+        else{
+            *(po + postID++) = *(in + inID++);
+        }
+    }
+    while (!s.empty())
+    {
+        *(po + postID++) = s.top();
+        s.pop();
     }
 
-}
-
-int priorty(string op){
-    if(op == "+" || op == "-"){
-        return 1;
+    for(int i = 0; i < len; i++){
+        if(*(po+i) != ")"){
+            cout << *(po+i) << " ";
+        }
     }
-    else if(op == "*" || op  == "/"){
-        return 2;
-    }
-    else if(op == "(" || op == ")"){
-        return 3;
-    }
-    else{
-        return 0;
-    }        
+    cout << endl;    
 }
 
 int main()
@@ -89,11 +85,6 @@ int main()
         }
 
         inToPost(infix, postfix, l);
-
-        for(int i = 0; i < l; i++){
-            cout << *(postfix + i) << " ";
-        }
-        cout << "\n";
 
     }
 
