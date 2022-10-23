@@ -31,6 +31,7 @@ void inToPost(string *in , string *po ,int len)
                     }
                     if(s.top()=="(" and *(in + inID)==")"){
                         s.pop();
+                        inID++;
                         break;
                     }
                     s.pop();
@@ -50,10 +51,8 @@ void inToPost(string *in , string *po ,int len)
         s.pop();
     }
 
-    for(int i = 0; i < len; i++){
-        if(*(po+i) != ")"){
-            cout << *(po+i) << " ";
-        }
+    for(int i = 0; i < postID - 1; i++){
+        cout << *(po+i) << " ";
     }
     cout << endl;    
 }
