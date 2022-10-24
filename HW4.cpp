@@ -2,6 +2,7 @@
 #include<stack>
 #include<string>
 #include<map>
+#include<bits/stdc++.h>
 using namespace std;
 
 
@@ -12,47 +13,50 @@ map<string,int> priorty2 = {
 {"+",2},{"-",2},{"*",3},{"/",3},{"(",1},{")",0}
 };
 
-void inToPost(string *in , string *po ,int len)
+void inToPost()
 {
     stack<string> s;
-    int inID = 0;
-    int postID = 0;
-    while(inID < len)
+    int index =0 ;
+    string infix;
+    getline(cin,infix);
+    stringstream chr(infix);
+    string ans[1000];
+
+    while(chr >> infix)
     {
-        if(priorty.count(*(in + inID))){
+        if(priorty.count(infix)){
             if(s.empty()){//
-                s.push(*(in + inID++));
+                s.push(infix);
             }
             else{
-                while (!s.empty() && priorty2[s.top()] >= priorty[*(in + inID)])
+                while (!s.empty() && priorty2[s.top()] >= priorty[infix])
                 {
                     if(s.top()!="("){
-                        *(po + postID++) = s.top();
+                        ans[index++] = s.top();
                     }
-                    if(s.top()=="(" and *(in + inID)==")"){
+                    if(s.top()=="(" and infix ==")"){
                         s.pop();
-                        inID++;
                         break;
                     }
                     s.pop();
                 }
-                if(*(in + inID) != ")"){
-                    s.push(*(in + inID++));
+                if(infix != ")"){
+                    s.push(infix);
                 };
             }
         }
         else{
-            *(po + postID++) = *(in + inID++);
+            ans[index++] = infix;
         }
     }
     while (!s.empty())
     {
-        *(po + postID++) = s.top();
+        ans[index++] = s.top();
         s.pop();
     }
 
-    for(int i = 0; i < postID - 1; i++){
-        cout << *(po+i) << " ";
+    for(int i = 0; i < index; i++){
+        cout << ans[i] << ' ';
     }
     cout << endl;    
 }
@@ -63,28 +67,9 @@ int main()
     cin >> N;
     string s;
     getline(cin, s);
-    for(int i = 0; i < N; i++){
+    for(int t = 0; t < N; t++){
 
-        getline(cin, s);
-        string infix[1000] ;
-        string postfix[1000] ;
-        int l = 0;
-
-        while(1){
-            if(s.find(' ') == -1){
-                infix[l] = s.substr(0,1);
-                l++;
-                break;
-            }
-            else{
-                infix[l] = s.substr(0,s.find(' '));
-                s = s.substr(s.find(' ') + 1, s.length());
-                l++;
-            }
-        }
-
-        inToPost(infix, postfix, l);
-
+        inToPost();
     }
 
 
