@@ -12,7 +12,7 @@ struct TreeNode
     TreeNode* Rchild;
 };
 void postorder(TreeNode* root , queue<char> &q);
-int cal(int n1, int n2,char op);
+long long cal(long long n1, long long n2,char op);
 
 
 int main(){
@@ -53,7 +53,7 @@ int main(){
     }
     queue<char> postfix;
     postorder(&Tree[1], postfix);
-    stack<int> calculate;
+    stack<long long> calculate;
 
     while (1)
     {
@@ -66,7 +66,7 @@ int main(){
                 postfix.pop();
             }
             else{
-                int a,b;
+                long long a,b;
                 b = calculate.top();
                 calculate.pop();
                 a = calculate.top();
@@ -76,14 +76,11 @@ int main(){
             }
         }
     }
-    cout << calculate.top() << calculate.empty() << convert2['3'] << endl;
-    calculate.pop();
-    cout << calculate.empty();
-
+    cout << calculate.top();
     return 0;
 }
 
-int cal(int n1, int n2,char op)
+long long cal(long long n1, long long n2,char op)
 {
     if(op == '+'){
         return n1 + n2;
@@ -91,7 +88,7 @@ int cal(int n1, int n2,char op)
     else if(op == '-'){
         return n1 - n2;
     }
-    else if(op == '-'){
+    else if(op == '*'){
         return n1 * n2;
     }
     else {
