@@ -12,7 +12,7 @@ struct TreeNode
     TreeNode* Rchild;
 };
 void postorder(TreeNode* root , queue<char> &q);
-int cal(int n1, int n2,char op);
+double cal(double n1, double n2,char op);
 
 
 int main(){
@@ -21,7 +21,7 @@ int main(){
         {"+",'+'},{"-",'-'},{"*",'*'},{"/",'/'},{"1",'1'},{"2",'2'},{"3",'3'},{"4",'4'},{"5",'5'},
         {"6",'6'},{"7",'7'},{"8",'8'},{"9",'9'},{"0",'0'}
     };
-    map<char,int> convert2 {
+    map<char,double> convert2 {
         {'1',1},{'2',2},{'3',3},{'4',4},{'5',5},
         {'6',6},{'7',7},{'8',8},{'9',9},{'0',0}
     };    
@@ -53,7 +53,7 @@ int main(){
     }
     queue<char> postfix;
     postorder(&Tree[1], postfix);
-    stack<int> calculate;
+    stack<double> calculate;
 
     while (1)
     {
@@ -66,7 +66,7 @@ int main(){
                 postfix.pop();
             }
             else{
-                int a,b;
+                double a,b;
                 b = calculate.top();
                 calculate.pop();
                 a = calculate.top();
@@ -80,7 +80,7 @@ int main(){
     return 0;
 }
 
-int cal(int n1, int n2,char op)
+double cal(double n1, double n2,char op)
 {
     if(op == '+'){
         return n1 + n2;
