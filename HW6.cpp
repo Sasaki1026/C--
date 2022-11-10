@@ -11,8 +11,10 @@ struct TreeNode
     TreeNode* Lchild;
     TreeNode* Rchild;
 };
+TreeNode Tree[3000006] = {0};
 void postorder(TreeNode* root , queue<char> &q);
-double cal(double n1, double n2,char op);
+long long cal(long long n1, long long n2,char op);
+
 
 
 int main(){
@@ -21,13 +23,13 @@ int main(){
         {"+",'+'},{"-",'-'},{"*",'*'},{"/",'/'},{"1",'1'},{"2",'2'},{"3",'3'},{"4",'4'},{"5",'5'},
         {"6",'6'},{"7",'7'},{"8",'8'},{"9",'9'},{"0",'0'}
     };
-    map<char,double> convert2 {
+    map<char,long long> convert2 {
         {'1',1},{'2',2},{'3',3},{'4',4},{'5',5},
         {'6',6},{'7',7},{'8',8},{'9',9},{'0',0}
     };    
     int height;
     cin >> height;
-    TreeNode Tree[1200] = {0};
+
     //input binary tree
     for(int i = 1; i <= pow(2,height) -1 ; i++){
         string tmp;
@@ -53,7 +55,7 @@ int main(){
     }
     queue<char> postfix;
     postorder(&Tree[1], postfix);
-    stack<double> calculate;
+    stack<long long> calculate;
 
     while (1)
     {
@@ -66,7 +68,7 @@ int main(){
                 postfix.pop();
             }
             else{
-                double a,b;
+                long long a,b;
                 b = calculate.top();
                 calculate.pop();
                 a = calculate.top();
@@ -80,7 +82,7 @@ int main(){
     return 0;
 }
 
-double cal(double n1, double n2,char op)
+long long cal(long long n1, long long n2,char op)
 {
     if(op == '+'){
         return n1 + n2;
@@ -91,9 +93,10 @@ double cal(double n1, double n2,char op)
     else if(op == '*'){
         return n1 * n2;
     }
-    else {
+    else if(op == '/'){
         return n1 / n2;
     }
+    return 0;
 }
 
 void postorder(TreeNode* root, queue<char> &q)
