@@ -15,7 +15,8 @@
         "valarray": "cpp",
         "map": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "new": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
 }
