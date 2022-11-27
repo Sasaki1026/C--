@@ -11,6 +11,16 @@ struct Binode
     Binode(int x) : data(x), left(NULL), right(NULL) {};
 };
 
+int max_num(Binode* node) {
+	Binode* current = node;
+
+	// get the rightmost leaf
+	while (current && current->right != NULL)
+		current = current->right;
+
+	return current->data;
+}
+
 void Level_order(Binode* root) {
 
     if (root == NULL){
@@ -45,7 +55,7 @@ Binode* insertBST(Binode* root, int e)
 
 Binode* deleteBST(Binode* root, int e)
 {
-    Binode* current;
+    Binode* current = NULL;
     Binode* parent = NULL;
     bool hasLeft = false;
 
@@ -114,12 +124,9 @@ Binode* deleteBST(Binode* root, int e)
             }
             else{//two children
 
-                Binode* tmp = current;
-                while(tmp && tmp->right){
-                    tmp = tmp->right;
-                }
-                current->data = tmp->data;
-                current->left = deleteBST(current->left, tmp->data);
+                int replaceData = max_num(current->left);
+                current->data = replaceData;
+                current->left = deleteBST(current->left, replaceData);
             }
 
             return root;           
