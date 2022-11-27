@@ -32,9 +32,10 @@ void Level_order(Binode* root) {
 	while (!Q.empty()) {
 		Binode* p = Q.front();
 		Q.pop();
-	    cout << p->data << " ";
+	    cout << p->data;
 		if (p->left) Q.push(p->left);
 		if (p->right) Q.push(p->right);
+        if(!Q.empty()) cout << " ";
 	}
     cout << endl;
 }
