@@ -1,17 +1,22 @@
 #include<iostream>
 #include<queue>
+#include<vector>
 using namespace std;
 
 struct Binode
 {
     int data;
-    Binode* left{0};
-    Binode* right{0};
-    Binode() = default;
-    Binode(int x) : data(x), left(0), right(0) {};
+    Binode* left;
+    Binode* right;
+    Binode(int x) : data(x), left(NULL), right(NULL) {};
 };
 
 void Level_order(Binode* root) {
+
+    if (root == NULL){
+        cout << endl ;
+    }
+
 	queue<Binode*> Q;
 	Q.push(root);
 	while (!Q.empty()) {
@@ -24,76 +29,104 @@ void Level_order(Binode* root) {
     cout << endl;
 }
 
-void inorder(Binode* root, queue<Binode*> queue) 
+Binode* insertBST(Binode* root, int e)
 {
-    inorder(root->left, queue);
-    queue.push(root);
-    inorder(root->right, queue);
-}
-
-void SearchI(Binode* root, int index) 
-{
-    queue<Binode*> q;
-    inorder(root, q);
-    for(int i = 1; i < index; i++){
-        q.pop();
+    if(root == NULL){
+        return new Binode(e);
     }
-    cout << q.front() << endl;
-}
-
-void insertBST(Binode* root, int e)
-{
-    if(!root){
-        root = new Binode(e);
-    }
-    else if(root->data < e){
-        insertBST(root->right, e);
-    }
-    else if(root->data > e){
-        insertBST(root->left, e);
+    if(e < root->data){
+        root->left = insertBST(root->left,e);
     }
     else{
-        cout << "InsertError" << endl;
+        root->right = insertBST(root->right,e);
     }
+    return root;
 }
 
 Binode* deleteBST(Binode* root, int e)
 {
-    if(!root){
-        cout << "cannot delete" << endl;
-        return root;
-    }
-    else if(root->data > e){
-        deleteBST(root->left, e);
-    }
-    else if(root->data < e){
-        deleteBST(root->right, e);
-    }
-    else{
-        if(!root->left && !root->right){
-            delete(root);
-            return nullptr;
-        }
-        else if(!root->right){
-            Binode* ret = root->left;
-            delete(root);
-            return ret;
-        }
-        else if(!root->left){
-            Binode* ret = root->right;
-            delete(root);
-            return ret;
-        }
-        else{
-            Binode* tmp = root->left;
-            while (tmp->right)
-            {
-                tmp = tmp->right;
+    Binode* current;
+    Binode* parent = NULL;
+    bool hasLeft = false;
+
+    // non-empty BST, find the target and its parent
+    if(root){
+        current = root;
+        while(current){
+
+            if(e == current->data){
+                break;
             }
-            root->data = tmp->data;
-            root->left = deleteBST(root->left, root->data);//可能有刪錯 等等檢查            
+            hasLeft = false;
+            parent = current;
+            if(e > current->data){
+                current = current->right;
+            }
+            else{
+                hasLeft = true;
+                current = current->left;
+            }
+        }
+        // found the target and delete
+        if(current){
+
+            if(!current->left && !current->right){ // no both children
+
+                if(!parent){//如果只有root,parent會戳到NULL
+                    return NULL;
+                }
+
+                if(hasLeft){
+                    parent->left = NULL;
+                }
+                else{
+                    parent->right = NULL;
+                }
+            }
+
+            else if(!current->left){// only right child
+
+                if(!parent){//如果只有root,parent會戳到NULL
+                    return NULL;
+                }
+
+                if(hasLeft){
+                    parent->left = current->right;
+                }
+                else{
+                    parent->right = current->right;
+                }
+            }
+
+            else if(!current->right){// only left child
+
+                if(!parent){//如果只有root,parent會戳到NULL
+                    return NULL;
+                }
+
+                if(hasLeft){
+                    parent->left = current->left;
+                }
+                else{
+                    parent->right = current->left;
+                }
+
+            }
+            else{//two children
+
+                Binode* tmp = current;
+                while(tmp && tmp->right){
+                    tmp = tmp->right;
+                }
+                current->data = tmp->data;
+                current->left = deleteBST(current->left, tmp->data);
+            }
+
+            return root;           
         }
     }
+
+    cout << "cannot delete" << endl;
     return root;
 }
 
@@ -114,30 +147,44 @@ int height(Binode* root)
     }
 }
 
+void search(Binode* root , int index, vector<Binode*>& results)
+{
+    if(results.size() == index){
+        cout << results.back()->data << endl;
+        return;
+    }
+
+    if(root){
+        search(root->left, index, results);
+        results.push_back(root);
+        search(root->right, index, results);
+    }
+}
+
 int main()
 {
-    Binode* BST = nullptr;
+    Binode* BST = NULL;
+    
     while (1)
     {
         string operation;
+        int x;
         cin >> operation;
         if(operation == "insert"){
-            int x; 
             cin >> x;
-            insertBST(BST, x);
+            BST = insertBST(BST, x);
         }
         else if(operation == "delete"){
-            int x;
             cin >>x;
-            deleteBST(BST, x);
+            BST = deleteBST(BST, x);
         }
         else if(operation == "height") {
             cout << height(BST) << endl;
         }
         else if(operation == "search"){
-            int x;
+            vector<Binode*> temp;
             cin >> x;
-            SearchI(BST, x);
+            search(BST, x, temp);
         }
         else if(operation == "traversal"){
             Level_order(BST);
