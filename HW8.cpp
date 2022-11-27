@@ -98,7 +98,7 @@ Binode* deleteBST(Binode* root, int e)
             else if(!current->left){// only right child
 
                 if(!parent){//如果只有root,parent會戳到NULL
-                    return NULL;
+                    return current->right;
                 }
 
                 if(hasLeft){
@@ -112,7 +112,7 @@ Binode* deleteBST(Binode* root, int e)
             else if(!current->right){// only left child
 
                 if(!parent){//如果只有root,parent會戳到NULL
-                    return NULL;
+                    return current->left;
                 }
 
                 if(hasLeft){
