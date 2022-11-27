@@ -25,6 +25,7 @@ void Level_order(Binode* root) {
 
     if (root == NULL){
         cout << endl ;
+        return;
     }
 
 	queue<Binode*> Q;
