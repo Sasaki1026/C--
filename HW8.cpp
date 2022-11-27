@@ -47,7 +47,7 @@ Binode* insertBST(Binode* root, int e)
     if(e < root->data){
         root->left = insertBST(root->left,e);
     }
-    else{
+    else if(e > root->data){
         root->right = insertBST(root->right,e);
     }
     return root;
