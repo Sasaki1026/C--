@@ -1,72 +1,67 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-
 
 int main()
 {
+
     int vertex, edge;
-    cin >> vertex;
-    cin >> edge;
-    int adj[vertex][vertex];
-    bool visited[vertex];
-    int distance[vertex];
+    cin >> vertex >> edge;
+    int MSTedge = 0;
 
+    // adjacency matrix
+    int adjM[vertex][vertex] = {0};
 
-
-    //init
-    for(int i = 0; i < vertex; i++){
-        for(int j = 0; j < vertex; j++){
-            adj[i][j] = 0;
-        }
-    }
-    for(int i = 0; i < vertex; i++){
-        visited[i] = false;
-    }
-    for(int i = 0; i < vertex; i++){
-        distance[i] = 1e8;
-    }
-
-    //input edge
-    for(int i = 0; i < edge; i++){
+    for (int i = 0; i < edge; i++)
+    {
         int a, b, w;
         cin >> a >> b >> w;
-        adj[a][b] = w;
+        adjM[a][b] = w;
     }
 
-    //set 0 as root
-    distance[0] = 0;
+    // create an array to check visited vertex
+    bool visit[vertex];
 
-    for(int i = 0; i < vertex; i++){
+    // initialise the visit array to false
+    for (int i = 0; i < vertex; i++)
+    {
+        visit[i] = false;
+    }
 
-        int a = -1, b = -1, min = 1e8;
+    visit[0] = true;
 
-        for(int j = 0; j < vertex; j++){
-            if(!visited[j] && distance[j] < min){//find the closest point
-                a = j;
-                min = distance[j];
+    int totalWeight = 0;
+
+    while (MSTedge < vertex - 1)
+    {
+
+        int min = 1e9;
+        int nextPoint;
+
+        for (int i = 0; i < vertex; i++)
+        {
+            if (visit[i])
+            {
+                for (int j = 0; j < vertex; j++)
+                {
+                    if (!visit[j] && adjM[i][j])
+                    {
+                        if (min > adjM[i][j])
+                        {
+                            min = adjM[i][j];
+                            nextPoint = j;
+                        }
+                    }
+                }
             }
         }
 
-        if(a == -1) break;//all point visited
-        visited[a] = true;
+        totalWeight += min;
 
-        for(b = 0; b < vertex; b++){
-            if(!visited[b] && adj[a][b] < distance[b]){
-                distance[b] = adj[a][b];
-            }
-        }
-
+        visit[nextPoint] = true;
+        MSTedge++;
     }
 
-    int MST = 0;
-
-    for(int i = 0; i < vertex; i++){
-        if(distance[i] != 1e8){
-            MST += distance[i];
-        }
-    }
-
-    cout << MST << endl;
+    cout << totalWeight << endl;
 
     return 0;
 }
